@@ -11,4 +11,4 @@ def get_boost():
     if lb_update > l_date:
         l_date = lb_update
         badger_boost = json.loads(fetch_boosts())
-    return badger_boost
+    return {"boosts":badger_boost,"date":l_date}

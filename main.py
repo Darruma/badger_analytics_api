@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from boost import get_boost
-from scores import get_scores
+from scores import get_score_of_address
 app = FastAPI()
 
 origins = ["*"]
@@ -23,6 +23,6 @@ def boost():
     return get_boost()
 
 
-@app.get('/scores')
-def scores():
-    return get_scores()
+@app.get('/scores/{address}')
+def scores(address):
+    return get_score_of_address(address)
