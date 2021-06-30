@@ -1,6 +1,7 @@
 import boto3
 import decouple
 from rich.console import Console
+import requests
 import time
 from time import mktime
 from datetime import datetime
@@ -12,6 +13,7 @@ s3 = boto3.client(
 json_bucket = "badger-staging-merkle-proofs"
 key = "badger-boosts.json"
 
+scores_url = "https://badgerdao.tk/rewards/scores.json"
 
 def fetch_boosts():
     s3_object = s3.get_object(Bucket=json_bucket,Key=key)
@@ -23,3 +25,6 @@ def last_boost_update():
     lastMod = s3_object['ResponseMetadata']['HTTPHeaders']['last-modified']
     time_struct = time.strptime(lastMod, '%a, %d %b %Y %H:%M:%S %Z')
     return datetime.fromtimestamp(mktime(time_struct))
+
+def fetch_scores():
+    return requests.get(scores_url).json()
