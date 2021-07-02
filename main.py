@@ -34,6 +34,6 @@ def cycles(page: int):
     return paginate_cycles(page)
 
 @app.on_event("startup")
-@repeat_every(seconds=300)
+@repeat_every(seconds=6000)
 def periodic():
     fill_latest_cycles()
