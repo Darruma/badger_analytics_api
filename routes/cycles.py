@@ -54,7 +54,7 @@ def paginate_cycles(page):
     offset = (int(page+1) - 1) * records_per_page
     paginate_query = """
     select * from cycle_table 
-    order by cycle
+    order by cycle desc
     limit (%s)
     offset (%s)
     """
@@ -71,4 +71,5 @@ def paginate_cycles(page):
                 "endBlock": data[4],
                 "totalTokenDist": data[5]
             })
-    return cycle_data
+
+    return sorted(cycle_data,key=lambda c: c["cycle"],reverse=True)
