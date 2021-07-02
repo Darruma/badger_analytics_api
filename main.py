@@ -1,14 +1,14 @@
-from scores import get_scores
 from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_utils.tasks import repeat_every
 
-from boost import get_boost
-from scores import get_score_of_address
+
+from routes.boost import get_boost
+from routes.scores import get_score_of_address
+from routes.cycles import paginate_cycles,fill_latest_cycles
 app = FastAPI()
-
 origins = ["*"]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -17,12 +17,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def root():
+    return {"Hello": "World"}
 
 @app.get("/boosts")
 def boost():
     return get_boost()
 
-
 @app.get('/scores/{address}')
-def scores(address):
+def scores(address: str):
     return get_score_of_address(address)
+
+@app.get('/cycles/{page}')
+def cycles(page: int):
+    return paginate_cycles(page)
+
+@app.on_event("startup")
+@repeat_every(seconds=300)
+def periodic():
+    fill_latest_cycles()

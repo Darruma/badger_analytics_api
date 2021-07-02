@@ -3,9 +3,9 @@ from aws_utils import fetch_scores
 scores = {}
 
 conditions = {
-    "cond1":"Badger Staking & LPing",
-    "cond2":"Digg Staking & LPing",
-    "cond3":"Badger Governance Participant",
+    "cond1": "Badger Staking & LPing",
+    "cond2": "Digg Staking & LPing",
+    "cond3": "Badger Governance Participant",
     "cond4": "Badger NFT owner",
     "cond5": "Non-native sett user",
     "cond6": "ibBTC sett user"
