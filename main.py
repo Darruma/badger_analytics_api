@@ -6,7 +6,7 @@ from fastapi_utils.tasks import repeat_every
 
 from routes.boost import get_boost
 from routes.scores import get_score_of_address
-from routes.cycles import paginate_cycles,fill_latest_cycles
+from routes.cycles import paginate_cycles,fill_latest_cycles, get_cycle
 app = FastAPI()
 origins = ["*"]
 app.add_middleware(
@@ -32,6 +32,10 @@ def scores(address: str):
 @app.get('/cycles/{page}')
 def cycles(page: int):
     return paginate_cycles(page)
+
+@app.get('/cycle/{number}')
+def cycle(number: int):
+    return get_cycle(number)
 
 @app.on_event("startup")
 @repeat_every(seconds=6000)
