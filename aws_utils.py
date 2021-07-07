@@ -6,6 +6,7 @@ import json
 import time
 from time import mktime
 from datetime import datetime
+
 s3 = boto3.client(
     "s3",
     aws_access_key_id=decouple.config("AWS_ACCESS_KEY_ID"),
@@ -18,24 +19,29 @@ key = "badger-boosts.json"
 
 scores_url = "https://badgerdao.tk/rewards/scores.json"
 
+
 def fetch_boosts():
-    s3_object = s3.get_object(Bucket=json_bucket,Key=key)
+    s3_object = s3.get_object(Bucket=json_bucket, Key=key)
     data = s3_object["Body"].read().decode("utf-8")
     return data
 
+
 def last_boost_update():
-    s3_object = s3.get_object(Bucket=json_bucket,Key=key)
-    lastMod = s3_object['ResponseMetadata']['HTTPHeaders']['last-modified']
-    time_struct = time.strptime(lastMod, '%a, %d %b %Y %H:%M:%S %Z')
+    s3_object = s3.get_object(Bucket=json_bucket, Key=key)
+    lastMod = s3_object["ResponseMetadata"]["HTTPHeaders"]["last-modified"]
+    time_struct = time.strptime(lastMod, "%a, %d %b %Y %H:%M:%S %Z")
     return datetime.fromtimestamp(mktime(time_struct))
+
 
 def fetch_scores():
     return requests.get(scores_url).json()
 
+
 def fetch_cycle(cycleNumber):
     key = "logs/{}.json".format(cycleNumber)
-    s3_object = s3.get_object(Bucket=analytics_bucket,Key=key)
+    s3_object = s3.get_object(Bucket=analytics_bucket, Key=key)
     return json.loads(s3_object["Body"].read().decode("utf-8"))
+
 
 def list_all_cycles():
     print("listing all cycles")
@@ -47,6 +53,7 @@ def list_all_cycles():
     for res in results["Contents"]:
         fileName = res["Key"].split("/")[1]
         cycle = fileName.split(".")[0]
+        print(cycle)
         cycles.append(int(cycle))
 
     return cycles
