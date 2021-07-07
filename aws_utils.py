@@ -50,10 +50,12 @@ def list_all_cycles():
         Bucket=analytics_bucket,
         Prefix="logs/",
     )
-    for res in results["Contents"]:
+    data = results["Contents"]
+    for res in data:
+        if res["Key"] == "logs/":
+            continue
         fileName = res["Key"].split("/")[1]
         cycle = fileName.split(".")[0]
-        print(cycle)
         cycles.append(int(cycle))
 
     return cycles
