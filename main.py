@@ -38,6 +38,6 @@ def cycle(number: int):
     return get_cycle(number)
 
 @app.on_event("startup")
-@repeat_every(seconds=6000)
+@repeat_every(seconds=60)
 def periodic():
     fill_latest_cycles()

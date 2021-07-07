@@ -88,11 +88,14 @@ def paginate_cycles(page):
 
 
 def conv_row_to_cycle_data(data):
-    return {
-        "cycle": data[0],
-        "merkleRoot": data[1],
-        "contentHash": data[2],
-        "startBlock": data[3],
-        "endBlock": data[4],
-        "totalTokenDist": data[5],
-    }
+    if data:
+        return {
+            "cycle": data[0],
+            "merkleRoot": data[1],
+            "contentHash": data[2],
+            "startBlock": data[3],
+            "endBlock": data[4],
+            "totalTokenDist": data[5],
+        }
+    else:
+        return {data: "Cycle not found"}
