@@ -98,4 +98,4 @@ def conv_row_to_cycle_data(data):
             "totalTokenDist": data[5],
         }
     else:
-        return {data: "Cycle not found"}
+        return {"data": "Cycle not found"}
