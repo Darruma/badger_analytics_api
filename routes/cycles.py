@@ -41,7 +41,7 @@ def get_cycle(number):
         where cycle = (%s)
         """
         cur.execute(cycle_query, (number,))
-        return conv_row_to_cycle_data(number,cur.fetchone())
+        return conv_row_to_cycle_data(cur.fetchone())
 
 
 def fill_latest_cycles():
@@ -83,7 +83,10 @@ def paginate_cycles(page):
         cur.execute(paginate_query, (records_per_page, offset))
         result = cur.fetchall()
         for data in result:
-            cycle_data.append(conv_row_to_cycle_data(data))
+            cd = conv_row_to_cycle_data(data)
+            if cd["success"]:
+                cycle_data.append(conv_row_to_cycle_data(data)["data"])
+    print(cycle_data)
     if len(cycle_data) > 0:
         return {
             "success": True,
