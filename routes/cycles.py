@@ -1,4 +1,5 @@
 import json, sys
+from main import cycle
 from pool import db
 from aws_utils import list_all_cycles, fetch_cycle
 
@@ -40,7 +41,7 @@ def get_cycle(number):
         where cycle = (%s)
         """
         cur.execute(cycle_query, (number,))
-        return conv_row_to_cycle_data(cur.fetchone())
+        return conv_row_to_cycle_data(number,cur.fetchone())
 
 
 def fill_latest_cycles():
@@ -83,19 +84,35 @@ def paginate_cycles(page):
         result = cur.fetchall()
         for data in result:
             cycle_data.append(conv_row_to_cycle_data(data))
-
-    return sorted(cycle_data, key=lambda c: c["cycle"], reverse=True)
+    if len(cycle_data) > 0:
+        return {
+            "success": True,
+            "data": sorted(cycle_data, key=lambda c: c["cycle"], reverse=True)
+        }
+    else:
+        return {
+            "success": False,
+            "data":"No cycle data found"
+        }
 
 
 def conv_row_to_cycle_data(data):
     if data:
         return {
-            "cycle": data[0],
-            "merkleRoot": data[1],
-            "contentHash": data[2],
-            "startBlock": data[3],
-            "endBlock": data[4],
-            "totalTokenDist": data[5],
+            "data": {
+                "cycle": data[0],
+                "merkleRoot": data[1],
+                "contentHash": data[2],
+                "startBlock": data[3],
+                "endBlock": data[4],
+                "totalTokenDist": data[5],
+            },
+            "success":True
         }
     else:
-        return {"data": "Cycle not found"}
+        return {
+            "success":False,
+            "data": "Cycle not found"
+        }
+
+            

@@ -5,10 +5,14 @@ from datetime import datetime
 badger_boost = {}
 l_date = datetime.min
 
+
 def get_boost():
-    global l_date,badger_boost
+    global l_date, badger_boost
     lb_update = last_boost_update()
     if lb_update > l_date:
         l_date = lb_update
         badger_boost = json.loads(fetch_boosts())
-    return {"boosts":badger_boost,"date":l_date}
+    if len(badger_boost) > 0:
+        return {"success": True, "data": {"boosts": badger_boost, "date": l_date}}
+    else:
+        return {"success": False, "data": "No Badger Boosts"}
