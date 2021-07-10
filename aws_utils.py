@@ -12,7 +12,7 @@ s3 = boto3.client(
     aws_access_key_id=decouple.config("AWS_ACCESS_KEY_ID"),
     aws_secret_access_key=decouple.config("AWS_SECRET_ACCESS_KEY"),
 )
-json_bucket = "badger-staging-merkle-proofs"
+json_bucket = "badger-merkle-proofs"
 analytics_bucket = "badger-analytics"
 
 key = "badger-boosts.json"
