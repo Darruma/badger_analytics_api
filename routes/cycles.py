@@ -1,5 +1,4 @@
 import json, sys
-from main import cycle
 from pool import db
 from aws_utils import list_all_cycles, fetch_cycle
 
@@ -35,6 +34,7 @@ def get_cycle_table_size():
 
 
 def get_cycle(number):
+    print(number)
     with db() as (conn, cur):
         cycle_query = """
         select * from cycle_table
@@ -92,7 +92,7 @@ def paginate_cycles(page):
     else:
         return {
             "success": False,
-            "data":"No cycle data found"
+            "data":"No cycle data"
         }
 
 
