@@ -20,7 +20,7 @@ def get_nfts():
 
 def get_user_nfts(address):
     nft_data = get_nfts()
-    if nft_data["success"]:
+    if nft_data["success"] and address.lower() in nfts:
         return {"data": nfts[address.lower()], "success": True}
     else:
         return {"data": {}, "success": False}
