@@ -20,17 +20,41 @@ key = "badger-boosts.json"
 scores_url = "https://badgerdao.tk/rewards/scores.json"
 
 
-def fetch_boosts():
-    s3_object = s3.get_object(Bucket=json_bucket, Key=key)
+def fetch_aws_data(bucket, key):
+    s3_object = s3.get_object(Bucket=bucket, Key=key)
     data = s3_object["Body"].read().decode("utf-8")
     return data
 
 
-def last_boost_update():
-    s3_object = s3.get_object(Bucket=json_bucket, Key=key)
+def last_aws_update(bucket, key):
+    s3_object = s3.get_object(Bucket=bucket, Key=key)
     lastMod = s3_object["ResponseMetadata"]["HTTPHeaders"]["last-modified"]
     time_struct = time.strptime(lastMod, "%a, %d %b %Y %H:%M:%S %Z")
     return datetime.fromtimestamp(mktime(time_struct))
+
+
+def fetch_boosts():
+    return fetch_aws_data(json_bucket, "badger-boosts.json")
+
+
+def last_boost_update():
+    return last_aws_update(json_bucket, "badger-boosts.json")
+
+
+def fetch_schedules():
+    return fetch_aws_data(analytics_bucket, "schedules.json")
+
+
+def last_schedule_update():
+    return last_aws_update(analytics_bucket, "schedules.json")
+
+
+def fetch_nfts():
+    return fetch_aws_data(json_bucket, "nft_scores.json")
+
+
+def last_nft_update():
+    return last_aws_update(json_bucket, "nft_scores.json")
 
 
 def fetch_scores():

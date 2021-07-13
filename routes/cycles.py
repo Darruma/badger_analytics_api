@@ -90,13 +90,10 @@ def paginate_cycles(page):
     if len(cycle_data) > 0:
         return {
             "success": True,
-            "data": sorted(cycle_data, key=lambda c: c["cycle"], reverse=True)
+            "data": sorted(cycle_data, key=lambda c: c["cycle"], reverse=True),
         }
     else:
-        return {
-            "success": False,
-            "data":"No cycle data"
-        }
+        return {"success": False, "data": "No cycle data"}
 
 
 def conv_row_to_cycle_data(data):
@@ -110,12 +107,7 @@ def conv_row_to_cycle_data(data):
                 "endBlock": data[4],
                 "totalTokenDist": data[5],
             },
-            "success":True
+            "success": True,
         }
     else:
-        return {
-            "success":False,
-            "data": "Cycle not found"
-        }
-
-            
+        return {"success": False, "data": "Cycle not found"}
