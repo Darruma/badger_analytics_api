@@ -1,4 +1,3 @@
-from routes.nfts import get_user_nfts
 from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,6 +8,8 @@ from routes.boost import get_boost
 from routes.scores import get_score_of_address
 from routes.cycles import paginate_cycles, fill_latest_cycles, get_cycle
 from routes.unlock_schedules import get_schedules
+from routes.nfts import get_nfts, get_user_nfts
+
 
 app = FastAPI()
 origins = ["*"]
@@ -35,10 +36,15 @@ def boost():
 def schedules():
     return get_schedules()
 
+
+
+@app.get("nfts")
+def nfts():
+    return get_nfts()
+
 @app.get("/nft_score/{address}")
 def nft_score(address: str):
     return get_user_nfts(address)
-
 
 
 @app.get("/scores/{address}")
