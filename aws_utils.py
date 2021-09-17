@@ -70,16 +70,18 @@ def fetch_cycle(cycle: int, chain: str):
 def list_all_cycles(chain: str):
     print("listing all cycles")
     cycles = []
+    print("list_objects_v2")
     results = s3.list_objects_v2(
         Bucket=analytics_bucket,
-        Prefix=f"logs/{chain}",
+        Prefix=f"logs/{chain}"
     )
     data = results["Contents"]
     for res in data:
-        if res["Key"] == f"logs/{chain}":
+        if res["Key"] == f"logs/{chain}/":
             continue
-        fileName = res["Key"].split("/")[1]
+        fileName = res["Key"].split("/")[2]
         cycle = fileName.split(".")[0]
         cycles.append(int(cycle))
-
+    print(cycles)
+    print("listed all")
     return cycles

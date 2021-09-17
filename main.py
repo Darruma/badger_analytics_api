@@ -52,9 +52,10 @@ def scores(address: str):
     return get_score_of_address(address)
 
 
-@app.get("/cycles/{page}")
-def cycles(limit: int, offset: int = 0):
-    return paginate_cycles(limit, offset)
+@app.get("/cycles")
+def cycles(chain: str, limit: int, offset: int = 0):
+    print(chain, limit, offset)
+    return paginate_cycles(chain, limit, offset)
 
 
 @app.get("/cycle/{number}")
@@ -63,7 +64,7 @@ def cycle(number: int, chain: str = "eth"):
 
 
 @app.on_event("startup")
-@repeat_every(seconds=30)
+@repeat_every(seconds=60)
 def periodic():
     fill_latest_cycles("eth")
     fill_latest_cycles("polygon")

@@ -6,11 +6,11 @@ create_table_query = """
 create table if not exists cycle_table(
         cycle int not null,
         chain varchar(100) not null,
-        merkleroot varchar(100) not null,
+        merkleRoot varchar(100) not null,
         contentHash varchar(100) not null,
         startBlock int not null,
         endBlock int not null,
-        treeDistributions json
+        treeDistributions json,
         totalTokenDist json,
         primary key (cycle)
     );
@@ -52,7 +52,8 @@ def fill_latest_cycles(chain: str):
             print("Fetching cycle {}".format(cycle))
             cycle_data = fetch_cycle(cycle, chain)
             print("Fetched cycle data")
-            add_cycle_to_db(cycle_data)
+            print(cycle_data)
+            add_cycle_to_db(cycle_data[0])
 
 
 def add_cycle_to_db(cycle):
@@ -66,19 +67,21 @@ def add_cycle_to_db(cycle):
         """
         print("executing query")
         cur.execute(insert_query, (json.dumps(cycle),))
+        print("inserted into into table ")
         conn.commit()
 
 
-def paginate_cycles(records_per_page, offset):
+def paginate_cycles(chain, records_per_page, offset):
     paginate_query = """
     select * from cycle_table 
+    where chain = (%s)
     order by cycle desc
     limit (%s)
     offset (%s)
     """
     cycle_data = []
     with db() as (conn, cur):
-        cur.execute(paginate_query, (records_per_page, offset))
+        cur.execute(paginate_query, (chain, records_per_page, offset))
         result = cur.fetchall()
         for data in result:
             cd = conv_row_to_cycle_data(data)
