@@ -53,8 +53,8 @@ def scores(address: str):
 
 
 @app.get("/cycles")
-def cycles(chain: str, limit: int, offset: int = 0):
-    print(chain, limit, offset)
+def cycles(chain: str, limit: int, offset: Optional[int] = 0):
+    print(offset)
     return paginate_cycles(chain, limit, offset)
 
 
