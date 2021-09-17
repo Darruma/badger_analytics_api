@@ -33,14 +33,14 @@ def boost():
 
 
 @app.get("/schedules")
-def schedules():
-    return get_schedules()
-
+def schedules(chain: str = "eth"):
+    return get_schedules(chain)
 
 
 @app.get("nfts")
 def nfts():
     return get_nfts()
+
 
 @app.get("/nft_score/{address}")
 def nft_score(address: str):
@@ -53,16 +53,18 @@ def scores(address: str):
 
 
 @app.get("/cycles/{page}")
-def cycles(page: int):
-    return paginate_cycles(page)
+def cycles(limit: int, offset: int = 0):
+    return paginate_cycles(limit, offset)
 
 
 @app.get("/cycle/{number}")
-def cycle(number: int):
-    return get_cycle(number)
+def cycle(number: int, chain: str = "eth"):
+    return get_cycle(number, chain)
 
 
 @app.on_event("startup")
 @repeat_every(seconds=30)
 def periodic():
-    fill_latest_cycles()
+    fill_latest_cycles("eth")
+    fill_latest_cycles("polygon")
+    fill_latest_cycles("arbitrum")

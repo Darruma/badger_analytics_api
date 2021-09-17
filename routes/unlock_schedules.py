@@ -6,12 +6,12 @@ schedules = {}
 l_date = datetime.min
 
 
-def get_schedules():
+def get_schedules(chain: str):
     global l_date, schedules
-    lb_update = last_schedule_update()
+    lb_update = last_schedule_update(chain)
     if lb_update > l_date:
         l_date = lb_update
-        schedules = json.loads(fetch_schedules())
+        schedules = json.loads(fetch_schedules(chain))
     if len(schedules) > 0:
         return {"success": True, "data": {"schedules": schedules, "date": l_date}}
     else:
