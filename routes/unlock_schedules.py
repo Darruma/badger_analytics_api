@@ -8,6 +8,8 @@ l_date = {"eth": datetime.min, "arbitrum": datetime.min, "polygon": datetime.min
 
 
 def get_schedules(chain: str):
+    if chain == "matic":
+        chain = "polygon"
     global l_date, schedules
     lb_update = last_schedule_update(chain)
     if lb_update > l_date[chain]:
