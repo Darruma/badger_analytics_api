@@ -14,6 +14,8 @@ l_dates = {
 }
 
 def get_boost(chain):
+    if chain == "matic":
+        chain = "polygon"
     global l_dates, badger_boosts
     lb_update = last_boost_update(chain)
     if lb_update > l_dates[chain]:
