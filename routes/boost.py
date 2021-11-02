@@ -20,8 +20,8 @@ def get_boost(chain):
     lb_update = last_boost_update(chain)
     if lb_update > l_dates[chain]:
         l_date = lb_update
-        badger_boost = json.loads(fetch_boosts(chain))
-    if len(badger_boost) > 0:
+        badger_boosts[chain] = json.loads(fetch_boosts(chain))
+    if len(badger_boosts[chain]) > 0:
         return {"success": True, "data": {"boosts": badger_boosts[chain], "date": l_dates[chain]}}
     else:
         return {"success": False, "data": "No Badger Boosts"}
