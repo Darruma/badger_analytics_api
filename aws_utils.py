@@ -16,9 +16,13 @@ json_bucket = "badger-merkle-proofs"
 analytics_bucket = "badger-analytics"
 
 key = "badger-boosts.json"
-
 scores_url = "https://badgerdao.tk/rewards/scores.json"
 
+chain_to_id = {
+    "eth":1,
+    "arbitrum": 42161,
+    "polygon": 137
+}
 
 def fetch_aws_data(bucket, key):
     s3_object = s3.get_object(Bucket=bucket, Key=key)
@@ -33,12 +37,12 @@ def last_aws_update(bucket, key):
     return datetime.fromtimestamp(mktime(time_struct))
 
 
-def fetch_boosts():
-    return fetch_aws_data(json_bucket, "badger-boosts.json")
+def fetch_boosts(chain):
+    return fetch_aws_data(json_bucket, f"badger-boosts-{chain_to_id[chain]}.json")
 
 
-def last_boost_update():
-    return last_aws_update(json_bucket, "badger-boosts.json")
+def last_boost_update(chain):
+    return last_aws_update(json_bucket, f"badger-boosts-{chain_to_id[chain]}.json")
 
 
 def fetch_schedules(chain):

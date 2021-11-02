@@ -28,8 +28,8 @@ def root():
 
 
 @app.get("/boosts")
-def boost():
-    return get_boost()
+def boost(chain: str = "eth"):
+    return get_boost(chain)
 
 
 @app.get("/schedules")
