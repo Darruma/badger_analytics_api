@@ -46,7 +46,16 @@ def last_boost_update(chain):
 
 
 def fetch_schedules(chain):
-    return fetch_aws_data(analytics_bucket, f"schedules-{chain}.json")
+    curr_time = time.time()
+    schedules_by_sett = fetch_aws_data(analytics_bucket, f"schedules-{chain}.json")
+    for sett, schedules in list(schedules_by_sett.items()):
+        schedules_by_sett[sett] = list(filter(
+            lambda s: s["endTime"] > curr_time ,
+            schedules
+        ))
+    return schedules_by_sett
+
+    
 
 
 def last_schedule_update(chain):
