@@ -64,7 +64,7 @@ def cycle(number: int, chain: str = "ethereum"):
 
 
 @app.on_event("startup")
-@repeat_every(seconds=60)
+@repeat_every(seconds=120)
 def periodic():
     fill_latest_cycles("ethereum")
     fill_latest_cycles("polygon")

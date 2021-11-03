@@ -49,12 +49,14 @@ def fetch_schedules(chain):
     if chain == "eth":
         chain = "ethereum"
     curr_time = time.time()
-    schedules_by_sett = fetch_aws_data(analytics_bucket, f"schedules-{chain}.json")
+    print(curr_time)
+    schedules_by_sett = json.loads(fetch_aws_data(analytics_bucket, f"schedules-{chain}.json"))
     for sett, schedules in list(schedules_by_sett.items()):
         schedules_by_sett[sett] = list(filter(
-            lambda s: s["endTime"] > curr_time ,
+            lambda s: int(s["endTime"]) > int(curr_time) ,
             schedules
         ))
+        schedules_by_sett[sett] = [dict(t) for t in {tuple(d.items()) for d in schedules_by_sett[sett]}]
     return schedules_by_sett
 
     

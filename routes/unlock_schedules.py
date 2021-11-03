@@ -14,7 +14,7 @@ def get_schedules(chain: str):
     lb_update = last_schedule_update(chain)
     if lb_update > l_date[chain]:
         l_date[chain] = lb_update
-        schedules[chain] = json.loads(fetch_schedules(chain))
+        schedules[chain] = fetch_schedules(chain)
         print(schedules[chain])
     if len(schedules[chain]) > 0:
         return {"success": True, "data": {"schedules": schedules[chain], "date": l_date}}
