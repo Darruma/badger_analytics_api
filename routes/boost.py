@@ -3,12 +3,12 @@ import json
 from datetime import datetime
 
 badger_boosts = {
-    "eth":{},
+    "ethereum":{},
     "arbitrum":{},
     "polygon":{}
 }
 l_dates = {
-    "eth":datetime.min,
+    "ethereum":datetime.min,
     "arbitrum": datetime.min,
     "polygon": datetime.min
 }

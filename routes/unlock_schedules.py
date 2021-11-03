@@ -2,9 +2,9 @@ from aws_utils import fetch_schedules, last_schedule_update
 import json
 from datetime import date, datetime
 
-schedules = {"eth": {}, "arbitrum": {}, "polygon": {}}
+schedules = {"ethereum": {}, "arbitrum": {}, "polygon": {}}
 
-l_date = {"eth": datetime.min, "arbitrum": datetime.min, "polygon": datetime.min}
+l_date = {"ethereum": datetime.min, "arbitrum": datetime.min, "polygon": datetime.min}
 
 
 def get_schedules(chain: str):

@@ -19,7 +19,7 @@ key = "badger-boosts.json"
 scores_url = "https://badgerdao.tk/rewards/scores.json"
 
 chain_to_id = {
-    "eth":1,
+    "ethereum":1,
     "arbitrum": 42161,
     "polygon": 137
 }
@@ -46,6 +46,8 @@ def last_boost_update(chain):
 
 
 def fetch_schedules(chain):
+    if chain == "eth":
+        chain = "ethereum"
     curr_time = time.time()
     schedules_by_sett = fetch_aws_data(analytics_bucket, f"schedules-{chain}.json")
     for sett, schedules in list(schedules_by_sett.items()):

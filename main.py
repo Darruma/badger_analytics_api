@@ -28,12 +28,12 @@ def root():
 
 
 @app.get("/boosts")
-def boost(chain: str = "eth"):
+def boost(chain: str = "ethereum"):
     return get_boost(chain)
 
 
 @app.get("/schedules")
-def schedules(chain: str = "eth"):
+def schedules(chain: str = "ethereum"):
     return get_schedules(chain)
 
 
@@ -59,13 +59,13 @@ def cycles(chain: str, limit: int, offset: Optional[int] = 0):
 
 
 @app.get("/cycle/{number}")
-def cycle(number: int, chain: str = "eth"):
+def cycle(number: int, chain: str = "ethereum"):
     return get_cycle(number, chain)
 
 
 @app.on_event("startup")
 @repeat_every(seconds=60)
 def periodic():
-    fill_latest_cycles("eth")
+    fill_latest_cycles("ethereum")
     fill_latest_cycles("polygon")
     fill_latest_cycles("arbitrum")
