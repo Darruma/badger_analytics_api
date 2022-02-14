@@ -12,11 +12,14 @@ s3 = boto3.client(
     aws_access_key_id=decouple.config("AWS_ACCESS_KEY_ID"),
     aws_secret_access_key=decouple.config("AWS_SECRET_ACCESS_KEY"),
 )
+dynamodb = boto3.resource(
+        "dynamodb",
+        region_name="us-west-1",
+        aws_access_key_id=decouple.config("AWS_ACCESS_KEY_ID"),
+        aws_secret_access_key=decouple.config("AWS_SECRET_ACCESS_KEY"),
+)
 json_bucket = "badger-merkle-proofs"
-analytics_bucket = "badger-analytics"
-
 key = "badger-boosts.json"
-scores_url = "https://badgerdao.tk/rewards/scores.json"
 
 chain_to_id = {
     "ethereum":1,
@@ -44,61 +47,8 @@ def fetch_boosts(chain):
 def last_boost_update(chain):
     return last_aws_update(json_bucket, f"badger-boosts-{chain_to_id[chain]}.json")
 
+def get_metadata_table():
+    return "metadata-staging"
 
-def fetch_schedules(chain):
-    if chain == "eth":
-        chain = "ethereum"
-    curr_time = time.time()
-    print(curr_time)
-    schedules_by_sett = json.loads(fetch_aws_data(analytics_bucket, f"schedules-{chain}.json"))
-    for sett, schedules in list(schedules_by_sett.items()):
-        schedules_by_sett[sett] = list(filter(
-            lambda s: int(s["endTime"]) > int(curr_time) ,
-            schedules
-        ))
-        schedules_by_sett[sett] = [dict(t) for t in {tuple(d.items()) for d in schedules_by_sett[sett]}]
-    return schedules_by_sett
-
-    
-
-
-def last_schedule_update(chain):
-    return last_aws_update(analytics_bucket, f"schedules-{chain}.json")
-
-
-def fetch_nfts():
-    return fetch_aws_data(json_bucket, "nft_scores.json")
-
-
-def last_nft_update():
-    return last_aws_update(json_bucket, "nft_scores.json")
-
-
-def fetch_scores():
-    return requests.get(scores_url).json()
-
-
-def fetch_cycle(cycle: int, chain: str):
-    key = f"logs/{chain}/{cycle}.json"
-    s3_object = s3.get_object(Bucket=analytics_bucket, Key=key)
-    return json.loads(s3_object["Body"].read().decode("utf-8"))
-
-
-def list_all_cycles(chain: str):
-    print("listing all cycles")
-    cycles = []
-    print("list_objects_v2")
-    results = s3.list_objects_v2(
-        Bucket=analytics_bucket,
-        Prefix=f"logs/{chain}"
-    )
-    data = results["Contents"]
-    for res in data:
-        if res["Key"] == f"logs/{chain}/":
-            continue
-        fileName = res["Key"].split("/")[2]
-        cycle = fileName.split(".")[0]
-        cycles.append(int(cycle))
-    print(cycles)
-    print("listed all")
-    return cycles
+def get_claimable_table():
+    return "unclaimed-snapshots-staging"
