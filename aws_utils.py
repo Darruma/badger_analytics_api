@@ -50,5 +50,8 @@ def last_boost_update(chain):
 def get_metadata_table():
     return "metadata-staging"
 
+def get_rewards_table():
+    return "rewards-prod"
+
 def get_claimable_table():
     return "unclaimed-snapshots-staging"

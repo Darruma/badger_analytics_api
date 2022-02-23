@@ -6,6 +6,7 @@ from fastapi_utils.tasks import repeat_every
 
 from routes.boost import get_boost
 from routes.claimable_rewards import get_claimable_balance
+from routes.cycle_data import get_rewards_data
 
 
 app = FastAPI()
@@ -33,3 +34,7 @@ def boost(chain: str = "ethereum"):
 @app.get("/claimable/{addr}")
 def cycle(addr: str, chain: str = "ethereum"):
     return get_claimable_balance(chain, addr)
+
+@app.get("/cycle/{cycle}")
+def cycle(cycle: str, chain: str = "ethereum"):
+    return get_rewards_data(chain, cycle)
